@@ -1,0 +1,81 @@
+h1=. Unity Random
+
+h2=. Random Numbers for Unity3d
+
+p. Homepage: http://tucanosoftware.com/projects/unityrandom
+
+h3. FAQ
+
+h4. What is this?
+
+p. In Unity3d there is already a Random number generator based on the *platform-specific* random generator. 
+Here we present an alternative Random library for *Unity3d* designed to generate uniform Pseudo-Random deviates.
+The library use a fast PRNG (*Mersenne-Twister*) to generate: *Floating Number* in range [0-1] and in range [n-m], *Vector2* and *Vector3* data types. 
+The library comes with some special functions designed specifically for a game design framework: *Shuffle Bag*, *Dice*, *Random Color*.
+
+h4. Which kind of transformations I can apply to the random uniform deviates?
+
+p. The uniform deviates can be transformed with the distributions: *Standard Normal Distribution* and *Power-Law*. In addition is possible to generate floating random deviates coming from other distributions: *Poisson*, *Exponential* and *Gamma*.
+
+h4. How I can test the random numbers?
+
+p. The library add a window to the *Unity3D* editor that allow you to *Test* and *Visualize* your random numbers, Vector2 and Vector3. With the *SAVE* button, you can write the sample of random number to a txt file. This is useful if you need to analyze in deep the distribution of your random numbers with a statistical software.
+
+
+h3. Usage (C#)
+
+* *Initialization*
+** Initialization with a random seed: @ UnityRandom urand = new UnityRandom(); @
+** Initialization with a defined seed: @ UnityRandom urand = new UnityRandom(int seed); @
+
+* *Numbers*
+** A Random number in range [0-1]: @ float val = urand.Value() @
+** A Random number in range [m-n]: @ float val = urand.Range(0,100) @ 
+
+* *Transformations*
+** Available Transformations: 
+*** @ UnityRandom.Normalization.STDNORMAL @ with parameter: @float temperature@
+*** @ UnityRandom.Normalization.POWERLAW @ with parameter: @float power@
+** A Random number in range [0-1] with a Transformation: 
+*** @ float val = urand.Value(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+** A Random number in range [m-n] with a Transformation: 
+*** @ float val = urand.Value(0,100,UnityRandom.Normalization.POWERLAW, 5.0f) @
+
+* *Special Distributions*
+** *Poisson*: @ float val = urand.Poisson(5.0f) @ 
+** *Exponential*: @ float val = urand.Exponential(5.0f) @ 
+** *Gamma*: @ float val = urand.Gamma(5.0f) @ 
+
+* *2D Vectors*
+** *Square*
+*** A random *Vector2* point in a square with L=1: @ Vector2 pos = urand.PointInASquare() @
+*** A random *Vector2* point in a square with L=1 *normalized*: @ Vector2 pos = urand.PointInASquare(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+** *Circle*
+*** A random *Vector2* point in a circle (in the circle *perimeter*) with R=1: @ Vector2 pos = urand.PointInACircle() @
+*** A random *Vector2* point in a circle (in the circle *perimeter*) with R=1 *normalized*: @ Vector2 pos = urand.PointInACircle(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+** *Disk*
+*** A random *Vector2* point in a disk (in the circle *area*) with R=1: @ Vector2 pos = urand.PointInADisk() @
+*** A random *Vector2* point in a circle (in the circle *area*) with R=1 *normalized*: @ Vector2 pos = urand.PointInADisk(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+
+* *3D Vectors*
+** *Cube*
+*** A random *Vector3* point inside a cube with L=1: @ Vector3 pos = urand.PointInACube() @
+*** A random *Vector3* point inside a cube with L=1 *normalized*: @ Vector3 pos = urand.PointInACube(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+*** A random *Vector3* point in the surface of a cube with L=1: @ Vector3 pos = urand.PointOnACube() @
+*** A random *Vector3* point inside a cube with L=1 *normalized*: @ Vector3 pos = urand.PointOnACube(UnityRandom.Normalization.STDNORMAL, 5.0f) @
+
+** *Sphere*
+*** A random *Vector3* point inside a sphere (in the sphere *volume*) with R=1: @ Vector3 pos = urand.PointInASphere() @
+*** A random *Vector3* point in the sphere surface (in the sphere *surface*) with R=1: @ Vector3 pos = urand.PointOnASphere() @
+
+
+h3. Documentation
+
+* *Methods*
+
+h3. Dev Notes
+
+* Clone and test
+** Create an empty project in Unity
+** cd ./Assets
+** clone the repo here !
