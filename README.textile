@@ -27,7 +27,7 @@ h3. Usage (C#)
 *Initialization*
 Initialization with a seed: @UnityRandom urand = new UnityRandom(int seed);@
 
-*Usage*
+*Numbers*
 A Random number in range [0-1]: @float val = urand.Value()
 
 *Transformations*

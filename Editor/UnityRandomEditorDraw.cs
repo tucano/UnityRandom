@@ -66,12 +66,31 @@ public class UnityRandomEditorDraw
 	
 	public static void DrawXYPlot(ArrayList rlist, int width, int height)
 	{
+		DrawXYPoints(rlist, 0, 1, width, height);
+	}
+	
+	public static void DrawXYPlot(ArrayList rlist, int width, int height, bool scale)
+	{
+		// SCALE
+		float _min, _max;
+		if (scale) {
+			_min = Convert.ToSingle(rlist[0]);
+			_max = Convert.ToSingle(rlist[rlist.Count - 1]);
+		} else {
+			_min = 0;
+			_max = 1;
+		}		
+		DrawXYPoints(rlist, _min, _max, width, height);
+	}
+	
+	public static void DrawXYPlot(ArrayList rlist, int width, int height, float min, float max)
+	{	
+		DrawXYPoints(rlist, min, max, width, height);
+	}
+	
+	private static void DrawXYPoints(ArrayList rlist, float _min, float _max, int width, int height)
+	{
 		int counter = 0;
-		
-		// ALWAYS SCALE
-		float _min = Convert.ToSingle(rlist[0]);
-		float _max = Convert.ToSingle(rlist[rlist.Count - 1]);
-		
 		foreach ( object obj in rlist ) 
 		{
 			counter++;
@@ -81,7 +100,7 @@ public class UnityRandomEditorDraw
 			y = val * height;
 			x = counter * (Convert.ToSingle(width) / rlist.Count);
 			DrawPoint(new Vector2(x,y));
-		}
+		}	
 	}
 	
 	public static void DrawV3Plot(ArrayList rlist, int width, int height, UnityRandomEditorWindow.RandomVector3DType _type, float alpha, float beta)

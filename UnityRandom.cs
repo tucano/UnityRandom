@@ -9,12 +9,8 @@ using URandom;
 //                                                                         //
 // This code is free software under the Artistic license.                  //
 //                                                                         //
-// distributions from: http://www.nrbook.com/a/bookcpdf.php                //
+// distributions mainly from: http://www.nrbook.com/a/bookcpdf.php         //
 //                                                                         //
-// TODO:                                                                   //
-// 1. Shuffle Bag                                                          //
-// 2. Random in a sphere with normalizations [?]                           //
-// 3. Dices (1d6, 2d6)                                                     //
 //                                                                         //
 /////////////////////////////////////////////////////////////////////////////
 

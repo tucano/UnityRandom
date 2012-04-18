@@ -125,8 +125,18 @@ public class UnityRandomEditorWindow : EditorWindow {
 		GUILayout.Box("", GUILayout.Width(_graph_area_width), GUILayout.Height(_graph_area_height));
 		if (randomList != null && randomList.Count > 0) {
 			switch (_randomType) {
-			case RandomType.NUMBER: 
-			UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height);
+			case RandomType.NUMBER:
+				switch (_randomNumberType) {
+				case RandomNumberType.VALUE:
+					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height);	
+				break;
+				case RandomNumberType.RANGE:
+					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, _range_min, _range_max);
+				break;
+				default:
+					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, true);	
+				break;
+				}
 			break;
 			case RandomType.VECTOR_2D:
 			UnityRandomEditorDraw.DrawV2Plot(randomList, _graph_area_width, _graph_area_height, _randomVector2DType);
@@ -141,7 +151,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 			// generate a new ArrayList with the Sum, then send to DrawXYPlot
 			ArrayList sums = RandomDiceSums();
 			sums.Sort();
-			UnityRandomEditorDraw.DrawXYPlot(sums, _graph_area_width, _graph_area_height);
+			UnityRandomEditorDraw.DrawXYPlot(sums, _graph_area_width, _graph_area_height, true);
 			break;
 			default:
 			break;
