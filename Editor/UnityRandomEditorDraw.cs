@@ -83,22 +83,27 @@ public class UnityRandomEditorDraw
 		}
 	}
 	
-	public static void DrawV3Plot(ArrayList rlist, int width, int height, UnityRandomEditorWindow.RandomVector3DType _type)
+	public static void DrawV3Plot(ArrayList rlist, int width, int height, UnityRandomEditorWindow.RandomVector3DType _type, float alpha, float beta)
 	{
 		foreach ( object obj in rlist ) 
 		{
-			// TEST just remove Z 
-			Vector2 _pos = MapTo2D( (Vector3) obj, 0, 0);
+			Vector2 _pos;
 			
 			switch (_type) {
 			
+			case UnityRandomEditorWindow.RandomVector3DType.ONCUBE:
+			case UnityRandomEditorWindow.RandomVector3DType.INCUBE:
+				_pos = MapTo2D( (Vector3) obj, 0, 0);	
+			break;
+				
 			case UnityRandomEditorWindow.RandomVector3DType.ONSPHERE:
 			case UnityRandomEditorWindow.RandomVector3DType.INSPHERE:
-				// move from space -1 - 1 to space 0-1
-				_pos = ((_pos + Vector2.one) * 0.5f);
+				_pos = MapTo2D( (Vector3) obj, alpha, beta);    // rotation (alpha,beta)
+				_pos = ((_pos + Vector2.one) * 0.5f);           // move from space -1 - 1 to space 0-1
 			break;
 				
 			default:
+				_pos = MapTo2D( (Vector3) obj, 0, 0);
 			break;
 			}
 

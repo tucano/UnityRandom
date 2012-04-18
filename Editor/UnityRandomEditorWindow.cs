@@ -10,6 +10,10 @@ using URandom;
 
 public class UnityRandomEditorWindow : EditorWindow {
 	
+	float alpha = 0;
+	float beta  = 0;
+	bool rotation = false;
+	
 	int _graph_area_width = 500;
 	int _graph_area_height = 500;
 	int _area_margin = 10;
@@ -83,6 +87,19 @@ public class UnityRandomEditorWindow : EditorWindow {
 		window.Show();
 	}
 	
+	// Update
+	void Update()
+	{
+		if (rotation)
+		{
+			// NAIF ROTATION
+			alpha += Time.deltaTime * 500;
+			beta += Time.deltaTime * 500;
+			this.Repaint();
+		}
+	}
+	
+	
 	// OnGUI
 	void OnGUI() 
 	{
@@ -98,7 +115,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 			UnityRandomEditorDraw.DrawV2Plot(randomList, _graph_area_width, _graph_area_height, _randomVector2DType);
 			break;
 			case RandomType.VECTOR_3D:
-			UnityRandomEditorDraw.DrawV3Plot(randomList, _graph_area_width, _graph_area_height, _randomVector3DType);
+			UnityRandomEditorDraw.DrawV3Plot(randomList, _graph_area_width, _graph_area_height, _randomVector3DType, alpha, beta);
 			break;
 			default:
 			break;
@@ -157,12 +174,29 @@ public class UnityRandomEditorWindow : EditorWindow {
 			EditorGUILayout.EndHorizontal();			
 			EditorGUILayout.EndVertical();
 		}
+		
+		
+		// 3D VIEWS BUTTONS
+		if (randomList != null && randomList.Count > 0 && _randomType == RandomType.VECTOR_3D) {
+			EditorGUILayout.BeginVertical("box");
+			String rotationLabel = rotation ? "STOP ROTATE VIEW" : "START ROTATE VIEW";
+			if (GUILayout.Button(rotationLabel,GUILayout.Height(60))) {
+				rotation = !rotation;
+			}
+			EditorGUILayout.EndVertical();
+		}
 		GUILayout.EndArea();
-
+		
 		// if GUI has changed empty the Array
 		if (GUI.changed && randomList != null) { 
 			randomList.Clear();
 			this.Repaint();
+		}
+		
+		// if Array is empty stop rotation and reset
+		if (randomList == null || randomList.Count == 0) {
+			rotation = false;
+			alpha = beta = 0;
 		}
 	}
 	
@@ -412,7 +446,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 		Debug.Log("GENERATING RANDOM " + _randomType + " WITH SEED: " + seed);
 		
 		UnityRandom urand = new UnityRandom(seed);
-		randomList = new ArrayList();
+		if (randomList == null)	randomList = new ArrayList();
 		randomList.Clear();
 		
 		switch (_randomType) {
