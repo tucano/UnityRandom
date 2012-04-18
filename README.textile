@@ -33,28 +33,16 @@ A Random number in range [0-1]: @float val = urand.Value()
 *Transformations*
 A Random number in range [0-1] with a Transformation: @float val = urand.Value(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
-*2D Vectors*
-** *Square*
-*** 
-*** 
-** *Circle*
-*** 
-*** 
-** *Disk*
-*** 
-*** 
+*Vectors*
+A random point in a disk with R=1: @Vector2 pos = urand.PointInADisk()@
 
-* *3D Vectors*
-** *Cube*
-*** 
-*** 
-*** 
-*** 
+*Colors*
+A random color in the range of visible light (rainbow): @Color col = urand.Rainbow()@
 
-** *Sphere*
-*** 
-*** 
+*Dice*
+A 2D6 dice roll @DiceRoll roll = urand.RollDice(2,DiceRoll.DiceType.D6)@
 
+<hr/>
 
 h3. Documentation
 
@@ -139,12 +127,36 @@ h4. Color
 
 A random *Color* in the range of visible light (rainbow): @Color col = urand.Rainbow()@
 
+A random *Color* in the range of visible light (rainbow) *normalized*: @Color col = urand.Rainbow(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h4. Dice
+
+A *Dice Roll*: @DiceRoll roll = urand.RollDice(n,type)@
+
+types:
+
+* DiceRoll.DiceType.D2
+* DiceRoll.DiceType.D3
+* DiceRoll.DiceType.D4
+* DiceRoll.DiceType.D6
+* DiceRoll.DiceType.D8
+* DiceRoll.DiceType.D10
+* DiceRoll.DiceType.D12
+* DiceRoll.DiceType.D20
+* DiceRoll.DiceType.D30
+* DiceRoll.DiceType.D100
+
+Example 2D6:
+
+@DiceRoll roll = urand.RollDice(2,DiceRoll.DiceType.D6)@
+
+
+<hr/>
 
 h3. Dev Notes
 
 * *Clone and test*
+** Fork the main project or clone: git://github.com/tucano/UnityRandom.git
 ** Create an empty project in Unity
 ** cd ./Assets
 ** clone the repo there!

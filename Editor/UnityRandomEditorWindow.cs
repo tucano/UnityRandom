@@ -306,6 +306,21 @@ public class UnityRandomEditorWindow : EditorWindow {
 		EditorGUILayout.EndHorizontal();		
 		EditorGUILayout.EndVertical();		
 		SeedBoxGUI();
+		
+		// BOX TRANSFORMATIONS
+		EditorGUILayout.BeginVertical("box");	
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label("TRANSFORMATIONS");
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.EndVertical();
+		
+		EditorGUILayout.BeginVertical("box");
+		transform = EditorGUILayout.Toggle("Transform?",transform);
+		EditorGUILayout.EndVertical();
+		
+		if (transform) NormalizationNumberTypes();
 	}
 	
 	private void RandomVector3DGUI()
@@ -555,7 +570,11 @@ public class UnityRandomEditorWindow : EditorWindow {
 	{
 		for (int i = 0; i < samplig_size; i++) 
 		{
-			randomList.Add(_urand.Rainbow());
+			if (transform) {
+				randomList.Add(_urand.Rainbow(normalization,temperature));
+			} else {
+				randomList.Add(_urand.Rainbow());
+			}
 		}
 	}
 	
