@@ -177,7 +177,8 @@ public class UnityRandomEditorWindow : EditorWindow {
 		
 		
 		// 3D VIEWS BUTTONS
-		if (randomList != null && randomList.Count > 0 && _randomType == RandomType.VECTOR_3D) {
+		if (randomList != null && randomList.Count > 0 && _randomType == RandomType.VECTOR_3D && 
+			(_randomVector3DType == RandomVector3DType.INSPHERE || _randomVector3DType == RandomVector3DType.ONSPHERE)) {
 			EditorGUILayout.BeginVertical("box");
 			String rotationLabel = rotation ? "STOP ROTATE VIEW" : "START ROTATE VIEW";
 			if (GUILayout.Button(rotationLabel,GUILayout.Height(60))) {

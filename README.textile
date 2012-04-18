@@ -67,7 +67,7 @@ h3. Usage (C#)
 ** *Sphere*
 *** A random *Vector3* point inside a sphere (in the sphere *volume*) with R=1: @Vector3 pos = urand.PointInASphere()@
 *** A random *Vector3* point in the sphere surface (in the sphere *surface*) with R=1: @Vector3 pos = urand.PointOnASphere()@
-s
+
 
 h3. Documentation
 
