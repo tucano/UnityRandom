@@ -10,6 +10,7 @@ public class UnityRandomEditorDraw
 {
 	public static Texture2D aaLineTex = null;
 	public static Texture2D lineTex = null;
+	public static Texture2D tex = null;
 	
 	public static void DrawLine(Vector2 pointA, Vector2 pointB, Color color, float width, bool antiAlias)
 	{
@@ -163,4 +164,37 @@ public class UnityRandomEditorDraw
 		UnityRandomEditorDraw.DrawLine(_c,_d,Color.blue,1.0f,true);
 	}
 
+	public static void DrawColorPlot(ArrayList rlist, int width, int height)
+	{
+		float x,y;
+		x = y = 0.0f;
+		float grid_space = 25.0f;
+		if (!tex) {
+			tex = new Texture2D(1,1,TextureFormat.ARGB32,false);
+		}
+		// make a simple grid
+		foreach ( object obj in rlist ) 
+		{
+			Vector2 a = new Vector2(x,y);
+			Vector2 b = new Vector2((x+grid_space),y);
+			Vector2 c = new Vector2(x,(y+grid_space));
+			Vector2 d = new Vector2((x+grid_space),(y+grid_space));
+			DrawPoint(a);
+			DrawPoint(b);
+			DrawPoint(c);
+			DrawPoint(d);
+			
+			// make a new texture with the color
+			tex.SetPixel(0, 1, (Color) obj);
+			tex.Apply();
+			GUI.DrawTexture(new Rect(a.x,a.y,grid_space,grid_space), tex);
+			
+			if (x < (width - grid_space)) {
+				x += grid_space;
+			} else {
+				x = 0;
+				y += grid_space;
+			}
+		}
+	}
 }

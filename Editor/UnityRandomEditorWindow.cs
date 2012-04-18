@@ -25,7 +25,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 	
 	bool transform = false;
 	int samplig_size = 500;
-	int max_samplig_size = 5000;
+	int max_samplig_size = 10000; // depend on the type
 	float temperature = 5.0f;
 	
 	int seed;
@@ -41,7 +41,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 	{
 		NUMBER = 1,
 		VECTOR_2D = 2,
-		VECTOR_3D = 3
+		VECTOR_3D = 3,
+		COLOR = 4,
+		DICE = 5
 	}
 	private RandomType _randomType = RandomType.NUMBER;
 	
@@ -77,7 +79,11 @@ public class UnityRandomEditorWindow : EditorWindow {
 	
 	// THIS IS THE NORMALIZATION FOR UnityRandom Class
 	private UnityRandom.Normalization normalization = UnityRandom.Normalization.STDNORMAL;
-
+	
+	// THIS IS THE DICE TYPE
+	private DiceRoll.DiceType dice = DiceRoll.DiceType.D6;
+	private int nroll = 1;
+	
 	// Add menu named "Unity Random" to the Window menu
 	[MenuItem ("Window/Unity Random")]	
 	static void Init () 
@@ -98,11 +104,22 @@ public class UnityRandomEditorWindow : EditorWindow {
 			this.Repaint();
 		}
 	}
-	
-	
+		
 	// OnGUI
 	void OnGUI() 
 	{
+		// SAMPLING SIZE
+		switch (_randomType) {
+			case RandomType.NUMBER:    max_samplig_size  = 10000; break;
+			case RandomType.VECTOR_2D: max_samplig_size  = 5000; break;	
+			case RandomType.VECTOR_3D: max_samplig_size  = 1000; break;
+			case RandomType.COLOR:     max_samplig_size  = 400;  break;
+			case RandomType.DICE:      max_samplig_size  = 5000;  break;	
+			default: max_samplig_size = 5000; break;
+		}
+		// ADJUST CURRENT SIZE
+		if (samplig_size > max_samplig_size) samplig_size = max_samplig_size;
+		
 		// DRAWING AREA
 		GUILayout.BeginArea(new Rect(_area_margin,_area_margin,_graph_area_width, _graph_area_height));
 		GUILayout.Box("", GUILayout.Width(_graph_area_width), GUILayout.Height(_graph_area_height));
@@ -116,6 +133,15 @@ public class UnityRandomEditorWindow : EditorWindow {
 			break;
 			case RandomType.VECTOR_3D:
 			UnityRandomEditorDraw.DrawV3Plot(randomList, _graph_area_width, _graph_area_height, _randomVector3DType, alpha, beta);
+			break;
+			case RandomType.COLOR:
+			UnityRandomEditorDraw.DrawColorPlot(randomList, _graph_area_width, _graph_area_height);
+			break;
+			case RandomType.DICE:
+			// generate a new ArrayList with the Sum, then send to DrawXYPlot
+			ArrayList sums = RandomDiceSums();
+			sums.Sort();
+			UnityRandomEditorDraw.DrawXYPlot(sums, _graph_area_width, _graph_area_height);
 			break;
 			default:
 			break;
@@ -155,6 +181,12 @@ public class UnityRandomEditorWindow : EditorWindow {
 		
 		case RandomType.VECTOR_3D: RandomVector3DGUI();
 		break;
+		
+		case RandomType.COLOR: RandomColorGUI();
+		break;
+		
+		case RandomType.DICE: RandomDiceGUI();
+		break;
 			
 		default:
 		break;
@@ -189,16 +221,91 @@ public class UnityRandomEditorWindow : EditorWindow {
 		GUILayout.EndArea();
 		
 		// if GUI has changed empty the Array
-		if (GUI.changed && randomList != null) { 
-			randomList.Clear();
+		if (GUI.changed && randomList != null && randomList.Count != 0) { 
+			CleanList();
 			this.Repaint();
 		}
 		
-		// if Array is empty stop rotation and reset
+		// if Array is empty stop rotation and reset alpha/beta
 		if (randomList == null || randomList.Count == 0) {
 			rotation = false;
 			alpha = beta = 0;
 		}
+	}
+	
+	
+	private void CleanList()
+	{
+		// FIXME I NEED TO REMOVE OBJECTS MANUALLY?
+		randomList.Clear();
+	}
+	
+	private ArrayList RandomDiceSums()
+	{
+		ArrayList result = new ArrayList();
+		foreach ( object obj in randomList ) 
+		{
+			DiceRoll _roll = (DiceRoll) obj;
+			result.Add( _roll.Sum() );
+		}
+		return result;
+	}
+	
+	// DICES GUI
+	private void RandomDiceGUI()
+	{
+		EditorGUILayout.BeginVertical("box");
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label("TEST RANDOM DICES");
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();
+		
+		SeedBoxGUI();
+		
+		EditorGUILayout.BeginVertical("box");
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.Label("Dice:", GUILayout.Width(100));
+		dice = (DiceRoll.DiceType) EditorGUILayout.EnumPopup(dice, GUILayout.Width(100));
+		GUILayout.FlexibleSpace();
+		GUILayout.Label( (nroll + dice.ToString()), GUILayout.Width(100));
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();
+		
+		EditorGUILayout.BeginVertical("box");
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.Label("#Rolls:", GUILayout.Width(100));
+		nroll = EditorGUILayout.IntSlider(nroll, 0, 10);
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();
+	}
+	
+	// BOXSEEDCONFIGURATION
+	private void SeedBoxGUI()
+	{
+		EditorGUILayout.BeginVertical("box");		
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.Label("RandomSeed:", GUILayout.Width(100));
+		stringSeed = EditorGUILayout.TextField(stringSeed, GUILayout.Width(100));
+		ParseSeed();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label("range: +/-" + Int32.MaxValue);
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();
+	}
+	
+	private void RandomColorGUI()
+	{
+		EditorGUILayout.BeginVertical("box");
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label("TEST RANDOM COLORS");
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();		
+		SeedBoxGUI();
 	}
 	
 	private void RandomVector3DGUI()
@@ -231,16 +338,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
 		
-		// BOXSEEDCONFIGURATION
-		EditorGUILayout.BeginVertical("box");		
-		EditorGUILayout.BeginHorizontal();
-		GUILayout.Label("RandomSeed:", GUILayout.Width(100));
-		stringSeed = EditorGUILayout.TextField(stringSeed, GUILayout.Width(100));
-		ParseSeed();
-		GUILayout.FlexibleSpace();
-		GUILayout.Label("range: +/-" + Int32.MaxValue);
-		EditorGUILayout.EndHorizontal();		
-		EditorGUILayout.EndVertical();
+		SeedBoxGUI();
 		
 		// BOX TRANSFORMATIONS
 		EditorGUILayout.BeginVertical("box");	
@@ -290,16 +388,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical();
 		
-		// BOXSEEDCONFIGURATION
-		EditorGUILayout.BeginVertical("box");		
-		EditorGUILayout.BeginHorizontal();
-		GUILayout.Label("RandomSeed:", GUILayout.Width(100));
-		stringSeed = EditorGUILayout.TextField(stringSeed, GUILayout.Width(100));
-		ParseSeed();
-		GUILayout.FlexibleSpace();
-		GUILayout.Label("range: +/-" + Int32.MaxValue);
-		EditorGUILayout.EndHorizontal();		
-		EditorGUILayout.EndVertical();
+		SeedBoxGUI();
 		
 		// BOX TRANSFORMATIONS
 		EditorGUILayout.BeginVertical("box");	
@@ -363,16 +452,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 			EditorGUILayout.EndVertical();
 		}
 		
-		// BOXSEEDCONFIGURATION
-		EditorGUILayout.BeginVertical("box");		
-		EditorGUILayout.BeginHorizontal();
-		GUILayout.Label("RandomSeed:", GUILayout.Width(100));
-		stringSeed = EditorGUILayout.TextField(stringSeed, GUILayout.Width(100));
-		ParseSeed();
-		GUILayout.FlexibleSpace();
-		GUILayout.Label("range: +/-" + Int32.MaxValue);
-		EditorGUILayout.EndHorizontal();		
-		EditorGUILayout.EndVertical();
+		SeedBoxGUI();
 		
 		// BOX TRANSFORMATIONS
 		switch (_randomNumberType) {
@@ -450,18 +530,33 @@ public class UnityRandomEditorWindow : EditorWindow {
 		if (randomList == null)	randomList = new ArrayList();
 		randomList.Clear();
 		
-		switch (_randomType) {
-		case RandomType.NUMBER: SampleNumber(ref urand);
-		break;
-		case RandomType.VECTOR_2D: SampleVector2D(ref urand);
-		break;
-		case RandomType.VECTOR_3D: SampleVector3D(ref urand);
-		break;
-		default:
-		break;
+		switch (_randomType) 
+		{
+			case RandomType.NUMBER: SampleNumber(ref urand); break;
+			case RandomType.VECTOR_2D: SampleVector2D(ref urand); break;
+			case RandomType.VECTOR_3D: SampleVector3D(ref urand); break;
+			case RandomType.COLOR: SampleColor(ref urand); break;
+			case RandomType.DICE: SampleDice(ref urand); break;	
+			default: SampleNumber(ref urand); break;
 		}
 		
 		this.Repaint();
+	}
+	
+	private void SampleDice(ref UnityRandom _urand)
+	{
+		for (int i = 0; i < samplig_size; i++) 
+		{
+			randomList.Add( _urand.RollDice(nroll, dice));
+		}
+	}
+	
+	private void SampleColor(ref UnityRandom _urand)
+	{
+		for (int i = 0; i < samplig_size; i++) 
+		{
+			randomList.Add(_urand.Rainbow());
+		}
 	}
 	
 	private void SampleVector3D(ref UnityRandom _urand)
@@ -619,5 +714,14 @@ public class UnityRandomEditorWindow : EditorWindow {
 				this.Repaint();
 			}
 		}	
+	}
+	
+	// BEWARE of TEXTURE2D MEMORY LEAKS!!!!
+	void OnDisable()
+	{
+		// KILL TEXTURES
+		UnityEngine.Object.DestroyImmediate(UnityRandomEditorDraw.tex);
+		UnityEngine.Object.DestroyImmediate(UnityRandomEditorDraw.aaLineTex);
+		UnityEngine.Object.DestroyImmediate(UnityRandomEditorDraw.lineTex);
 	}
 }
