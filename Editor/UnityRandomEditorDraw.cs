@@ -107,26 +107,9 @@ public class UnityRandomEditorDraw
 	{
 		foreach ( object obj in rlist ) 
 		{
-			Vector2 _pos;
-			
-			switch (_type) {
-			
-			case UnityRandomEditorWindow.RandomVector3DType.ONCUBE:
-			case UnityRandomEditorWindow.RandomVector3DType.INCUBE:
-				_pos = MapTo2D( (Vector3) obj, 0, 0);	
-			break;
-				
-			case UnityRandomEditorWindow.RandomVector3DType.ONSPHERE:
-			case UnityRandomEditorWindow.RandomVector3DType.INSPHERE:
-				_pos = MapTo2D( (Vector3) obj, alpha, beta);    // rotation (alpha,beta)
-				_pos = ((_pos + Vector2.one) * 0.5f);           // move from space -1 - 1 to space 0-1
-			break;
-				
-			default:
-				_pos = MapTo2D( (Vector3) obj, 0, 0);
-			break;
-			}
-
+			Vector2 _pos = MapTo2D( (Vector3) obj, alpha, beta);    // rotation (alpha,beta)
+			// move from space -1 - 1 to space 0-1
+			_pos = ((_pos + Vector2.one) * 0.5f);
 			DrawPoint( Vector2.Scale(_pos, new Vector2(width, height)));
 		}
 	}
@@ -148,8 +131,7 @@ public class UnityRandomEditorDraw
 			Vector2 pos = ((Vector2) obj + Vector2.one) * 0.5f;
 			switch (_type) {
 			case UnityRandomEditorWindow.RandomVector2DType.SQUARE:
-				// NO SCALE -1 - 1
-				DrawPoint( Vector2.Scale( (Vector2) obj, new Vector2(width, height)) );
+				DrawPoint( Vector2.Scale( pos, new Vector2(width, height)) );
 			break;
 			case UnityRandomEditorWindow.RandomVector2DType.CIRCLE:
 				DrawPoint( Vector2.Scale( pos, new Vector2(width, height) ) );

@@ -8,8 +8,9 @@ namespace URandom
 	{
 		public static Vector3 Surface(ref NPack.MersenneTwister _rand)
 		{
-			Vector3 pos = GetPointOnCubeSurface(_rand.NextSingle(true),_rand.NextSingle(true),_rand.Next(5));			
-			return pos;
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			Vector3 pos = GetPointOnCubeSurface(_rand.NextSingle(true),_rand.NextSingle(true),_rand.Next(5));	
+			return new Vector3((2*pos.x)-1, (2*pos.y)-1, (2*pos.z)-1);
 		}
 	
 		public static Vector3 Surface(ref NPack.MersenneTwister _rand, UnityRandom.Normalization n, float t)
@@ -32,8 +33,9 @@ namespace URandom
 				pos = GetPointOnCubeSurface(_rand.NextSingle(true),_rand.NextSingle(true),_rand.Next(5));
 			break;
 			}
-				
-			return pos;
+			
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			return new Vector3((2*pos.x)-1, (2*pos.y)-1, (2*pos.z)-1);
 		}
 		
 		// This should work: FIXME?
@@ -58,7 +60,9 @@ namespace URandom
 			
 		public static Vector3 Volume(ref NPack.MersenneTwister _rand)
 		{
-			return new Vector3(_rand.NextSingle(true), _rand.NextSingle(true), _rand.NextSingle(true));
+			Vector3 pos = new Vector3(_rand.NextSingle(true), _rand.NextSingle(true), _rand.NextSingle(true));
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			return new Vector3((2*pos.x)-1, (2*pos.y)-1, (2*pos.z)-1);
 		}
 		
 		public static Vector3 Volume(ref NPack.MersenneTwister _rand, UnityRandom.Normalization n, float t)
@@ -82,7 +86,8 @@ namespace URandom
 				z = _rand.NextSingle(true);
 			break;
 			}
-			return new Vector3(x,y,z);
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			return new Vector3((2*x)-1, (2*y)-1, (2*z)-1);
 		}
 	}
 }

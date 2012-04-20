@@ -31,6 +31,10 @@ public class UnityRandomEditorWindow : EditorWindow {
 	int seed;
 	string stringSeed = Int32.MaxValue.ToString(); 
 	
+	// FOR CAP AND RING
+	float spotAngle = 20.0f;
+	float innerAngle = 20.0f;
+	float outerAngle = 60.0f;
 	ArrayList randomList;
 	String filename = "sampling.txt";
 	private String path;
@@ -73,7 +77,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 		INCUBE = 0,
 		ONCUBE = 1,
 		INSPHERE = 2,
-		ONSPHERE = 3
+		ONSPHERE = 3,
+		ONCAP = 4,
+		ONRING = 5
 	}
 	private RandomVector3DType _randomVector3DType = RandomVector3DType.ONSPHERE;
 	
@@ -220,7 +226,10 @@ public class UnityRandomEditorWindow : EditorWindow {
 		
 		// 3D VIEWS BUTTONS
 		if (randomList != null && randomList.Count > 0 && _randomType == RandomType.VECTOR_3D && 
-			(_randomVector3DType == RandomVector3DType.INSPHERE || _randomVector3DType == RandomVector3DType.ONSPHERE)) {
+			(_randomVector3DType == RandomVector3DType.INSPHERE || 
+			 _randomVector3DType == RandomVector3DType.ONSPHERE ||
+			 _randomVector3DType == RandomVector3DType.ONCAP ||
+			_randomVector3DType == RandomVector3DType.ONRING )) {
 			EditorGUILayout.BeginVertical("box");
 			String rotationLabel = rotation ? "STOP ROTATE VIEW" : "START ROTATE VIEW";
 			if (GUILayout.Button(rotationLabel,GUILayout.Height(60))) {
@@ -351,16 +360,32 @@ public class UnityRandomEditorWindow : EditorWindow {
 		switch (_randomVector3DType) {
 		case RandomVector3DType.INCUBE:
 		case RandomVector3DType.ONCUBE:
-			GUILayout.Label("Vector3: [0,1]");
+			GUILayout.Label("Vector3: [-1,1] r = 1");
 		break;
 		case RandomVector3DType.ONSPHERE:
 		case RandomVector3DType.INSPHERE:
+		case RandomVector3DType.ONCAP:
+		case RandomVector3DType.ONRING:
 			GUILayout.Label("Vector3: [-1,1] r = 1");
 		break;
 		default:
 		break;
 		}
 		EditorGUILayout.EndHorizontal();
+		
+		switch (_randomVector3DType) {
+		case RandomVector3DType.ONCAP:
+			spotAngle = EditorGUILayout.Slider ("Spot Angle:", spotAngle, 0.0f, 180.0f);
+		break;
+		case RandomVector3DType.ONRING:
+			innerAngle = EditorGUILayout.Slider ("Inner Angle:", innerAngle, 0.0f, 180.0f);
+			outerAngle = EditorGUILayout.Slider ("Outer Angle:", outerAngle, 0.0f, 180.0f);
+			if (innerAngle > outerAngle) innerAngle = outerAngle;
+		break;
+		default:
+		break;
+		}
+		
 		EditorGUILayout.EndVertical();
 		
 		SeedBoxGUI();
@@ -399,7 +424,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 		GUILayout.FlexibleSpace();
 		switch (_randomVector2DType) {
 		case RandomVector2DType.SQUARE:
-			GUILayout.Label("Vector2: [0,1]");
+			GUILayout.Label("Vector2: [-1,1]");
 		break;		
 		case RandomVector2DType.CIRCLE:
 			GUILayout.Label("Vector2: [-1,1] r = 1");
@@ -612,7 +637,13 @@ public class UnityRandomEditorWindow : EditorWindow {
 			break;
 			case RandomVector3DType.ONSPHERE:
 				randomList.Add(_urand.PointOnASphere());
-			break;			
+			break;
+			case RandomVector3DType.ONCAP:
+				randomList.Add(_urand.PointOnCap(spotAngle));
+			break;
+			case RandomVector3DType.ONRING:
+				randomList.Add(_urand.PointOnRing(innerAngle,outerAngle));
+			break;
 			default:
 			break;
 			}

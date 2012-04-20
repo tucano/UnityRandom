@@ -16,6 +16,9 @@ using URandom;
 
 public class UnityRandom 
 {
+	// STORE MAX SEED VALUE (no access to System)
+	public static int max_seed = Int32.MaxValue;
+	
 	public enum Normalization
 	{
 		STDNORMAL = 0,
@@ -177,6 +180,30 @@ public class UnityRandom
 	public Vector3 PointInASphere(Normalization n, float t)
 	{
 		throw new ArgumentException("Normalizations for Sphere is not yet implemented");
+	}
+	
+	// RANDOM POINT IN A CAP. Return a Vector3 
+	// TODO: see RandomSphere GetPointOnCap(float spotAngle, ref NPack.MersenneTwister _rand, Quaternion orientation)
+	public Vector3 PointOnCap(float spotAngle)
+	{
+		return RandomSphere.GetPointOnCap(spotAngle, ref _rand);
+	}	
+	
+	public Vector3 PointOnCap(float spotAngle, Normalization n, float t)
+	{
+		throw new ArgumentException("Normalizations for PointOnCap is not yet implemented");
+	}
+	
+	// RANDOM POINT IN A RING on a SPHERE. Return a Vector3 
+	// TODO: see RandomSphere public static Vector3 GetPointOnRing(float innerSpotAngle, float outerSpotAngle, ref NPack.MersenneTwister _rand, Quaternion orientation)
+	public Vector3 PointOnRing(float innerAngle, float outerAngle)
+	{
+		return RandomSphere.GetPointOnRing(innerAngle, outerAngle, ref _rand);
+	}
+	
+	public Vector3 PointOnRing(float innerAngle, float outerAngle, Normalization n, float t)
+	{
+		throw new ArgumentException("Normalizations for PointOnRing is not yet implemented");
 	}
 	
 	// RANDOM RAINBOW COLOR

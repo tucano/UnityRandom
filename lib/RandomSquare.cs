@@ -8,8 +8,8 @@ namespace URandom
 	{
 		public static Vector2 Area( ref NPack.MersenneTwister _rand )
 		{
-			// Make a grid 0-1
-			return new Vector2(_rand.NextSingle(true), _rand.NextSingle(true));
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			return new Vector2((2*_rand.NextSingle(true) - 1), (2*_rand.NextSingle(true) - 1));
 		}
 		
 		public static Vector2 Area( ref NPack.MersenneTwister _rand, UnityRandom.Normalization n, float t )
@@ -31,7 +31,8 @@ namespace URandom
 			break;
 			}
 			
-			return new Vector2(x,y);			
+			// Move to -1, 1 space as for CIRCLE and SPHERE
+			return new Vector2((2*x - 1), (2*y - 1));
 		}
 	}
 }
