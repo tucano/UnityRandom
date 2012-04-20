@@ -61,47 +61,41 @@ Generation of uniform deviates in any range.
 
 h5. Value
 
-A Random number in range [0-1]: @float val = urand.Value()@
-
-A Random number in range [0-1] with a Transformation: @float val = urand.Value(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A Random number in range [0-1]: @float val = urand.Value()@
+* A Random number in range [0-1] with a Transformation: @float val = urand.Value(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h5. Range
 
-A Random number in range [1-100]: @float val = urand.Range(1,100)@ 
-
-A Random number in range [m-n] with a Transformation: @float val = urand.Value(0,100,UnityRandom.Normalization.POWERLAW, 5.0f)@
+* A Random number in range [1-100]: @float val = urand.Range(1,100)@ 
+* A Random number in range [m-n] with a Transformation: @float val = urand.Value(0,100,UnityRandom.Normalization.POWERLAW, 5.0f)@
 
 h5. Poisson
 
-@float val = urand.Poisson(5.0f)@ 
+* The Poisson distribution (pronounced [pwasɔ̃]) is a discrete probability distribution that expresses the probability of a given number of events occurring in a fixed interval of time and/or space if these events occur with a known average rate and independently of the time since the last event. Example: @float val = urand.Poisson(5.0f)@ 
 
 h5. Exponential
 
-@float val = urand.Exponential(5.0f)@ 
+* The Exponential distribution describes the time between events in a Poisson process, i.e. a process in which events occur continuously and independently at a constant average rate. Example: @float val = urand.Exponential(5.0f)@ 
 
 h5. Gamma
 
-@float val = urand.Gamma(5.0f)@ 
+* The gamma distribution, like the lognormal distribution, is an alternative to consider for ecological variables that seem to be highly skewed. Example: @float val = urand.Gamma(5.0f)@ 
 
 h4. Vector2
 
-generation of Unity Vector2
+generation of Unity Vector2 Objects.
 
 h5. Square
 
-A random *Vector2* point in a square with L=1: @Vector2 pos = urand.PointInASquare()@
-
-A random *Vector2* point in a square with L=1 *normalized*: @Vector2 pos = urand.PointInASquare(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Vector2* point in a square with L=1: @Vector2 pos = urand.PointInASquare()@
+* A random *Vector2* point in a square with L=1 *normalized*: @Vector2 pos = urand.PointInASquare(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h5. Disk/Circle
 
-A random *Vector2* point in a circle (in the circle *perimeter*) with R=1: @Vector2 pos = urand.PointInACircle()@
-
-A random *Vector2* point in a circle (in the circle *perimeter*) with R=1 *normalized*: @Vector2 pos = urand.PointInACircle(UnityRandom.Normalization.STDNORMAL, 5.0f)@
-
-A random *Vector2* point in a disk (in the circle *area*) with R=1: @Vector2 pos = urand.PointInADisk()@
-
-A random *Vector2* point in a circle (in the circle *area*) with R=1 *normalized*: @Vector2 pos = urand.PointInADisk(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Vector2* point in a circle (in the circle *perimeter*) with R=1: @Vector2 pos = urand.PointInACircle()@
+* A random *Vector2* point in a circle (in the circle *perimeter*) with R=1 *normalized*: @Vector2 pos = urand.PointInACircle(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Vector2* point in a disk (in the circle *area*) with R=1: @Vector2 pos = urand.PointInADisk()@
+* A random *Vector2* point in a circle (in the circle *area*) with R=1 *normalized*: @Vector2 pos = urand.PointInADisk(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h4. Vector3
 
@@ -109,31 +103,26 @@ generation of Unity Vector3
 
 h5. Cube
 
-A random *Vector3* point inside a cube with L=1: @Vector3 pos = urand.PointInACube()@
-
-A random *Vector3* point inside a cube with L=1 *normalized*: @Vector3 pos = urand.PointInACube(UnityRandom.Normalization.STDNORMAL, 5.0f)@
-
-A random *Vector3* point in the surface of a cube with L=1: @Vector3 pos = urand.PointOnACube()@
-
-A random *Vector3* point inside a cube with L=1 *normalized*: @Vector3 pos = urand.PointOnACube(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Vector3* point inside a cube with L=1: @Vector3 pos = urand.PointInACube()@
+* A random *Vector3* point inside a cube with L=1 *normalized*: @Vector3 pos = urand.PointInACube(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Vector3* point in the surface of a cube with L=1: @Vector3 pos = urand.PointOnACube()@
+* A random *Vector3* point inside a cube with L=1 *normalized*: @Vector3 pos = urand.PointOnACube(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h5. Sphere
 
-A random *Vector3* point inside a sphere (in the sphere *volume*) with R=1: @Vector3 pos = urand.PointInASphere()@
-
-A random *Vector3* point in the sphere surface (in the sphere *surface*) with R=1: @Vector3 pos = urand.PointOnASphere()@
+* A random *Vector3* point inside a sphere (in the sphere *volume*) with R=1: @Vector3 pos = urand.PointInASphere()@
+* A random *Vector3* point in the sphere surface (in the sphere *surface*) with R=1: @Vector3 pos = urand.PointOnASphere()@
 
 h4. Color
 
-A random *Color* in the range of visible light (rainbow): @Color col = urand.Rainbow()@
-
-A random *Color* in the range of visible light (rainbow) *normalized*: @Color col = urand.Rainbow(UnityRandom.Normalization.STDNORMAL, 5.0f)@
+* A random *Color* in the range of visible light (rainbow): @Color col = urand.Rainbow()@
+* A random *Color* in the range of visible light (rainbow) *normalized*: @Color col = urand.Rainbow(UnityRandom.Normalization.STDNORMAL, 5.0f)@
 
 h4. Dice
 
-A *Dice Roll*: @DiceRoll roll = urand.RollDice(n,type)@
+* A *Dice Roll*: @DiceRoll roll = urand.RollDice(n,type)@
 
-types:
+*Dice types:*
 
 * DiceRoll.DiceType.D2
 * DiceRoll.DiceType.D3
@@ -149,7 +138,6 @@ types:
 Example 2D6:
 
 @DiceRoll roll = urand.RollDice(2,DiceRoll.DiceType.D6)@
-
 
 <hr/>
 
