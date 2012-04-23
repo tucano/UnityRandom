@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NPack;
 using URandom;
 
@@ -243,6 +244,21 @@ public class UnityRandom
 		foreach (float x in values)
 		{
 			bag.Add(x);
+		}
+		return bag;
+	}
+	
+	// START a WIGHTED FLOAT SHUFFLE BAG, the trick is the it is added many times
+	// Note the a value can be shuffled with himself
+	public ShuffleBagCollection<float> ShuffleBag(Dictionary<float,int> dict)
+	{
+		ShuffleBagCollection<float> bag = new ShuffleBagCollection<float>();
+		foreach (KeyValuePair<float, int> x in dict)
+		{
+			//Debug.Log(x.Value);
+			int val = x.Value;
+			float key = x.Key;
+			bag.Add( key, val);
 		}
 		return bag;
 	}

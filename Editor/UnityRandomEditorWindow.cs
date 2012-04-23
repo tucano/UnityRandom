@@ -3,6 +3,7 @@ using UnityEditor;
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
@@ -13,6 +14,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 	#region Attributes
 	
 	float[] shufflebag = {1,2,3,4,5,6,7,8,9,10};
+	Dictionary<float,int> wshufflebag;
 	
 	float alpha = 0;
 	float beta  = 0;
@@ -52,7 +54,8 @@ public class UnityRandomEditorWindow : EditorWindow {
 		VECTOR_3D = 3,
 		COLOR = 4,
 		DICE = 5,
-		SHUFFLEBAG = 6
+		SHUFFLEBAG = 6,
+		WEIGHTEDBAG = 7
 	}
 	private RandomType _randomType = RandomType.NUMBER;
 	
@@ -105,7 +108,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 	{
 		// Get existing open window or if none, make a new one:
 		UnityRandomEditorWindow window = (UnityRandomEditorWindow)EditorWindow.GetWindow(typeof (UnityRandomEditorWindow), false, "UNITY RANDOM");
-		window.Show();
+		window.Show();		
 	}
 	
 	// Update
@@ -171,6 +174,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 			case RandomType.SHUFFLEBAG:
 			UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, shufflebag[0], shufflebag[shufflebag.Length - 1]);
 			break;
+			case RandomType.WEIGHTEDBAG:
+			UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, 1, 10);
+			break;
 			default:
 			// defailt is no drawing
 			break;
@@ -218,6 +224,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 		break;
 		
 		case RandomType.SHUFFLEBAG: ShuffleBagGUI();	
+		break;
+		
+		case RandomType.WEIGHTEDBAG: ShuffleBagGUI();	
 		break;
 			
 		default:
@@ -618,16 +627,40 @@ public class UnityRandomEditorWindow : EditorWindow {
 			case RandomType.COLOR: SampleColor(ref urand); break;
 			case RandomType.DICE: SampleDice(ref urand); break;	
 			case RandomType.SHUFFLEBAG: SampleShuffle(ref urand); break;
+			case RandomType.WEIGHTEDBAG: SampleWShuffle(ref urand); break;
 			default: SampleNumber(ref urand); break;
 		}
 		
 		this.Repaint();
 	}
 	
-	// Really no time to make it better (FIXME)
 	private void SampleShuffle(ref UnityRandom _urand)
 	{
-		ShuffleBagCollection<float> thebag = _urand.ShuffleBag(shufflebag);		
+		ShuffleBagCollection<float> thebag = _urand.ShuffleBag(shufflebag);
+		for (int m = 0; m < samplig_size; m++) 
+		{
+			randomList.Add(thebag.Next());
+		}
+		randomList.Sort();
+	}
+	
+	// Really no time to make it better (FIXME)
+	private void SampleWShuffle(ref UnityRandom _urand)
+	{
+		wshufflebag = new Dictionary<float,int>();
+		// fill the wshufflebag
+		wshufflebag[1] = 5;
+		wshufflebag[2] = 10;
+		wshufflebag[3] = 10;
+		wshufflebag[4] = 25;
+		wshufflebag[5] = 25;
+		wshufflebag[6] = 10;
+		wshufflebag[7] = 5;
+		wshufflebag[8] = 5;
+		wshufflebag[9] = 3;
+		wshufflebag[10] = 2;
+		
+		ShuffleBagCollection<float> thebag = _urand.ShuffleBag(wshufflebag);		
 		for (int m = 0; m < samplig_size; m++) 
 		{
 			randomList.Add(thebag.Next());
