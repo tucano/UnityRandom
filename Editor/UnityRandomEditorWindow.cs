@@ -10,6 +10,10 @@ using URandom;
 
 public class UnityRandomEditorWindow : EditorWindow {
 	
+	#region Attributes
+	
+	float[] shufflebag = {1,2,3,4,5,6,7,8,9,10};
+	
 	float alpha = 0;
 	float beta  = 0;
 	bool rotation = false;
@@ -47,7 +51,8 @@ public class UnityRandomEditorWindow : EditorWindow {
 		VECTOR_2D = 2,
 		VECTOR_3D = 3,
 		COLOR = 4,
-		DICE = 5
+		DICE = 5,
+		SHUFFLEBAG = 6
 	}
 	private RandomType _randomType = RandomType.NUMBER;
 	
@@ -90,6 +95,10 @@ public class UnityRandomEditorWindow : EditorWindow {
 	private DiceRoll.DiceType dice = DiceRoll.DiceType.D6;
 	private int nroll = 1;
 	
+	#endregion
+	
+	
+	#region Init,Update,OnGUI
 	// Add menu named "Unity Random" to the Window menu
 	[MenuItem ("Window/Unity Random")]	
 	static void Init () 
@@ -140,7 +149,7 @@ public class UnityRandomEditorWindow : EditorWindow {
 					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, _range_min, _range_max);
 				break;
 				default:
-					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, true);	
+					UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, true);
 				break;
 				}
 			break;
@@ -159,7 +168,11 @@ public class UnityRandomEditorWindow : EditorWindow {
 			sums.Sort();
 			UnityRandomEditorDraw.DrawXYPlot(sums, _graph_area_width, _graph_area_height, true);
 			break;
+			case RandomType.SHUFFLEBAG:
+			UnityRandomEditorDraw.DrawXYPlot(randomList, _graph_area_width, _graph_area_height, shufflebag[0], shufflebag[shufflebag.Length - 1]);
+			break;
 			default:
+			// defailt is no drawing
 			break;
 			}
 		}
@@ -202,6 +215,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 		break;
 		
 		case RandomType.DICE: RandomDiceGUI();
+		break;
+		
+		case RandomType.SHUFFLEBAG: ShuffleBagGUI();	
 		break;
 			
 		default:
@@ -252,7 +268,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 		}
 	}
 	
+	#endregion
 	
+	#region PrivateMethods
 	private void CleanList()
 	{
 		// FIXME I NEED TO REMOVE OBJECTS MANUALLY?
@@ -313,6 +331,18 @@ public class UnityRandomEditorWindow : EditorWindow {
 		GUILayout.Label("range: +/-" + Int32.MaxValue);
 		EditorGUILayout.EndHorizontal();		
 		EditorGUILayout.EndVertical();
+	}
+	
+	private void ShuffleBagGUI()
+	{
+		EditorGUILayout.BeginVertical("box");
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.Label("TEST SHUFFLE BAG");
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();		
+		EditorGUILayout.EndVertical();		
+		SeedBoxGUI();
 	}
 	
 	private void RandomColorGUI()
@@ -587,10 +617,22 @@ public class UnityRandomEditorWindow : EditorWindow {
 			case RandomType.VECTOR_3D: SampleVector3D(ref urand); break;
 			case RandomType.COLOR: SampleColor(ref urand); break;
 			case RandomType.DICE: SampleDice(ref urand); break;	
+			case RandomType.SHUFFLEBAG: SampleShuffle(ref urand); break;
 			default: SampleNumber(ref urand); break;
 		}
 		
 		this.Repaint();
+	}
+	
+	// Really no time to make it better (FIXME)
+	private void SampleShuffle(ref UnityRandom _urand)
+	{
+		ShuffleBagCollection<float> thebag = _urand.ShuffleBag(shufflebag);		
+		for (int m = 0; m < samplig_size; m++) 
+		{
+			randomList.Add(thebag.Next());
+		}
+		randomList.Sort();
 	}
 	
 	private void SampleDice(ref UnityRandom _urand)
@@ -776,6 +818,9 @@ public class UnityRandomEditorWindow : EditorWindow {
 		}	
 	}
 	
+	#endregion
+	
+	#region Events
 	// BEWARE of TEXTURE2D MEMORY LEAKS!!!!
 	void OnDisable()
 	{
@@ -784,4 +829,5 @@ public class UnityRandomEditorWindow : EditorWindow {
 		UnityEngine.Object.DestroyImmediate(UnityRandomEditorDraw.aaLineTex);
 		UnityEngine.Object.DestroyImmediate(UnityRandomEditorDraw.lineTex);
 	}
+	#endregion
 }

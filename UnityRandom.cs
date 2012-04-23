@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using NPack;
 using URandom;
 
@@ -232,5 +233,17 @@ public class UnityRandom
 		//Debug.Log(roll.RollToString());
 		//Debug.Log(roll.Sum());
 		return roll;
+	}
+	
+	// START a FLOAT SHUFFLE BAG
+	// Note the a value can be shuffled with himself
+	public ShuffleBagCollection<float> ShuffleBag(float[] values)
+	{
+		ShuffleBagCollection<float> bag = new ShuffleBagCollection<float>();
+		foreach (float x in values)
+		{
+			bag.Add(x);
+		}
+		return bag;
 	}
 }
