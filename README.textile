@@ -1,4 +1,6 @@
-h1=. Unity Random
+h1=. Unity Random 
+
+h3=. Version 1.0
 
 h2=. Random Numbers for Unity3d
 
