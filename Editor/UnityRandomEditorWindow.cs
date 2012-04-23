@@ -809,7 +809,8 @@ public class UnityRandomEditorWindow : EditorWindow {
 		foreach ( object obj in randomList ) 
 		{
 			// FIXME SAMPLING WRITE LINE FOR Vector3 and Vector2
-			switch (_randomType) {
+			switch (_randomType) 
+			{
 			case RandomType.NUMBER: 
 				fileWriter.WriteLine(obj); 
 			break;

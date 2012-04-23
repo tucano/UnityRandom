@@ -42,6 +42,37 @@ A random color in the range of visible light (rainbow): @Color col = urand.Rainb
 *Dice*
 A 2D6 dice roll @DiceRoll roll = urand.RollDice(2,DiceRoll.DiceType.D6)@
 
+*Shuffle Bag*
+
+In games or educational programs you often don't want real randomness. Unsurprisingly random it's often a bit too random. You may get some items several times in a row and others too rarely. It's either too easy or too hard. Balancing the weights is hard as well, because each run is too different. And if that wouldn't be already bad enough; it's also difficult to verify the results.
+
+A shuffle Bag with values: [1,10]
+
+@float[] shufflebag = {1,2,3,4,5,6,7,8,9,10};@
+
+@ShuffleBagCollection<float> thebag = _urand.ShuffleBag(shufflebag);@
+
+@float randvalue = thebag.Next()@
+
+A shuffle bag with weighted values:
+
+@Dictionary wshufflebag = new Dictionary<float,int>();@
+
+@wshufflebag[1] = 5;@
+
+@wshufflebag[2] = 45;@
+
+@wshufflebag[3] = 25;@
+
+@wshufflebag[4] = 25;@
+
+@ShuffleBagCollection<float> thebag = _urand.ShuffleBag(wshufflebag);	@
+
+@float randvalue = thebag.Next()@
+
+
+
+
 <hr/>
 
 h3. Documentation
@@ -138,6 +169,38 @@ h4. Dice
 Example 2D6:
 
 @DiceRoll roll = urand.RollDice(2,DiceRoll.DiceType.D6)@
+
+h4. Shuffle Bag
+
+From: http://kaioa.com/node/53
+
+In games or educational programs you often don't want real randomness. Unsurprisingly random it's often a bit too random. You may get some items several times in a row and others too rarely. It's either too easy or too hard. Balancing the weights is hard as well, because each run is too different. And if that wouldn't be already bad enough; it's also difficult to verify the results.
+
+A shuffle Bag with values: [1,10]
+
+@float[] shufflebag = {1,2,3,4,5,6,7,8,9,10};@
+
+@ShuffleBagCollection<float> thebag = _urand.ShuffleBag(shufflebag);@
+
+@float randvalue = thebag.Next()@
+
+A shuffle bag with weighted values:
+
+@Dictionary wshufflebag = new Dictionary<float,int>();@
+
+@wshufflebag[1] = 5;@
+
+@wshufflebag[2] = 45;@
+
+@wshufflebag[3] = 25;@
+
+@wshufflebag[4] = 25;@
+
+@ShuffleBagCollection<float> thebag = _urand.ShuffleBag(wshufflebag);	@
+
+@float randvalue = thebag.Next()@
+
+
 
 <hr/>
 
