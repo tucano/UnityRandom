@@ -21,7 +21,7 @@ public class ExampleUnityRandom : MonoBehaviour
 	
 	private void ToggleRotation()
 	{
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.GetComponent<RotateAround>().rotating = rotate;
@@ -71,7 +71,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointOnRing(20.0f, 30.0f));
@@ -83,7 +83,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointOnCap(30.0f));
@@ -101,7 +101,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();		
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointInACircle());
@@ -113,7 +113,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();		
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointInADisk());
@@ -125,7 +125,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();		
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointInASphere());
@@ -137,7 +137,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();		
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointInACube());
@@ -149,7 +149,7 @@ public class ExampleUnityRandom : MonoBehaviour
 		InitRandom();
 		CleanUp();		
 		MakeObjects();
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			item.transform.position = ScalePosition(urand.PointOnACube());
@@ -166,7 +166,7 @@ public class ExampleUnityRandom : MonoBehaviour
 	private void CleanUp()
 	{
 		// Clear all
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("RandomTest");
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("Player");
 		foreach (GameObject item in objs) 
 		{
 			Destroy(item);	
@@ -191,7 +191,7 @@ public class ExampleUnityRandom : MonoBehaviour
 			// WE set the sphere position
 			_sphere.transform.position = pos;
 			// WE give a tag to the sphere
-			_sphere.tag = "RandomTest";
+			_sphere.tag = "Player";
 			// Attach the rotation script
 			RotateAround _ra = _sphere.AddComponent<RotateAround>();
 			// SET the PIVOT POINT IN SCRIPT

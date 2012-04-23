@@ -4,6 +4,8 @@ h2=. Random Numbers for Unity3d
 
 p. Homepage: http://tucanosoftware.com/projects/unityrandom
 
+p. Example: http://108.166.95.149/UnityTest/UnityRandomExample/UnityRandomExample.html
+
 h3. FAQ
 
 h4. What is this?
